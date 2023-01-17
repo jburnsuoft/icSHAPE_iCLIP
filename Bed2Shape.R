@@ -1,7 +1,11 @@
-
 library(seqinr)
 library(Biostrings)
 
+#Define iCLIP and icSHAPE Coordinate Files
+#clipfile <- "SRSF1.peaks.bed"
+#shapeFile <- "SRSF1_icSHAPE.bed"
+
+#Extract iCLIP peak coordinates from .bed file
 getClipSites <- function(clipFile) {
   zfSites <- read.table(clipFile,
                         sep = "\t",
@@ -11,7 +15,7 @@ getClipSites <- function(clipFile) {
   return(zfSites)
 }
 
-
+#Extract icSHAPE range coverage coordinates
 getShapeSites <- function(shapeFile) {
   file1Tab <- read.table(shapeFile,
                          sep = "\t",
@@ -20,7 +24,7 @@ getShapeSites <- function(shapeFile) {
   return(file1Tab)
 }
 
-
+#Identify Overlapping iCLIP and icSHAPE Coverage
 getShapeRange <- function(zfPeaks, shapeSites, strandSh, range) {
   runSites <- data.frame()
   for (x in 1:nrow(zfPeaks)) {
@@ -42,7 +46,7 @@ getShapeRange <- function(zfPeaks, shapeSites, strandSh, range) {
 }
 
 
-
+#Extract Overlapping Coordinates from iCLIP and icSHAPE
 getDataSites <- function(clipFile, plusShape, minusShape, range) {
   plusSites <- getShapeRange(clipFile, plusShape, "+", range)
   minusSites <- getShapeRange(clipFile, minusShape, "-", range)
@@ -51,7 +55,7 @@ getDataSites <- function(clipFile, plusShape, minusShape, range) {
   return(allSites)
 }
 
-
+#Extract Corresponding icSHAPE Scores from icSHAPE Output File Folder Containing .SHAPE files
 writeShape <- function(posChrom, clusPos, shapeData, initRange, runSize, seqName, shapeFolderName) {
   seqName <- paste(shapeFolderName, seqName, ".SHAPE", sep="")
   shapeTrimmed <- shapeData[which(((clusPos - initRange) <= shapeData$"start") & (shapeData$"start"<= (clusPos + runSize)) & (posChrom == shapeData$"chrom")), ]
@@ -64,7 +68,8 @@ writeShape <- function(posChrom, clusPos, shapeData, initRange, runSize, seqName
 }
 
 
-#clusterDistance must be less than shapeRange!
+#getWriteSequence Example Command
+#getWriteSequence("ZRANB2.bam.bed", 25, 0, "HEK293_NP_VIVO_PLUS_HG19.bed", "HEK293_NP_VIVO_MINUS_HG19.bed", "ZRANB2_NEW25.bed_VIVO_sequences_fasta.fa", "ZRANB2_NEW25.bed_SEQ_VIVO_20_0/", "ZRANB2_NEW25.bed_FULL_SHAPE_VIVO_20_0/", "ZRANB2_NEW25.bed_CT_VIVO_20_0/", "ZRANB2_NEW25.bed_FULL_DOT_VIVO_20_0/")
 getWriteSequence <- function(clipFileName, shapeRange, clusterDistance, plusShapeName,
                              minusShapeName, outFastaName, seqFolderName,
                              shapeFolderName, ctFolderName, dbFolderName) {
