@@ -5,6 +5,8 @@ library(Biostrings)
 #clipfile <- "SRSF1.peaks.bed"
 #shapeFile <- "SRSF1_icSHAPE.bed"
 
+###Prepare Functions for getWriteSequence###
+
 #Extract iCLIP peak coordinates from .bed file
 getClipSites <- function(clipFile) {
   zfSites <- read.table(clipFile,
@@ -67,9 +69,10 @@ writeShape <- function(posChrom, clusPos, shapeData, initRange, runSize, seqName
               col.names = FALSE)
 }
 
-
-#getWriteSequence Example Command
+### Run getWriteSequence Function - Extracting icSHAPE Scores and Binding Sequences for Protein of Interest from iCLIP Peak Coordinate File and invivo/invitro icSHAPE Coordinates ###
+## Example Command ##
 #getWriteSequence("ZRANB2.bam.bed", 25, 0, "HEK293_NP_VIVO_PLUS_HG19.bed", "HEK293_NP_VIVO_MINUS_HG19.bed", "ZRANB2_NEW25.bed_VIVO_sequences_fasta.fa", "ZRANB2_NEW25.bed_SEQ_VIVO_20_0/", "ZRANB2_NEW25.bed_FULL_SHAPE_VIVO_20_0/", "ZRANB2_NEW25.bed_CT_VIVO_20_0/", "ZRANB2_NEW25.bed_FULL_DOT_VIVO_20_0/")
+
 getWriteSequence <- function(clipFileName, shapeRange, clusterDistance, plusShapeName,
                              minusShapeName, outFastaName, seqFolderName,
                              shapeFolderName, ctFolderName, dbFolderName) {
