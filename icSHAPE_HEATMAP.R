@@ -7,9 +7,9 @@ library(mclust)
 library(pheatmap)
 library(apcluster)
 
-#Define icSHAPE Data Folders
-#vitroShapeFolder <- "SRSF1_A_100_SHAPE_VITRO"
-#vivoShapeFolder <- "SRSF1_A_100_SHAPE_VIVO"
+###DEFINE ICSHAPE DATA FOLDERS - BEDTOOLS EXTENDED###
+#vitroShapeFolder <- "SRSF1_100_SHAPE_VITRO"
+#vivoShapeFolder <- "SRSF1_100_SHAPE_VIVO"
 
 loadShapeFile <- function(shapePath) {
   shape <- read.table(shapePath, 
@@ -91,7 +91,7 @@ combineCols <- function(shapeDfs) {
     return(shape)
 }
 
-#####DETERMINE CLUSTERING PARAMETERS#####
+#####DETERMINE CLUSTERING PARAMETERS FOR HEATMAPS#####
 
 #ELBOW CLUSTERING
 set.seed(13)
@@ -125,8 +125,7 @@ m.best2 <- dim(d_clust2$z)[2]
 cat("model-based optimal number of clusters:", m.best2, "\n")
 plot(d_clust2)
 
-
-#HEIRARCHICAL CLUSTERING
+#AFFINITY PROPOGATION CLUSTERING
 set.seed(13)
 d.apclus2 <- apcluster(negDistMat(r=2), shapediffs)
 cat("affinity propogation optimal number of clusters:", length(d.apclus2@clusters), "\n")
