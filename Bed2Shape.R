@@ -3,7 +3,7 @@ library(Biostrings)
 
 #Define iCLIP and icSHAPE Coordinate Files
 #clipfile <- "SRSF1.peaks.bed"
-#shapeFile <- "SRSF1_icSHAPE.bed"
+#shapeFile <- "HEK293_icSHAPE.bed"
 
 ###Prepare Functions for getWriteSequence###
 
