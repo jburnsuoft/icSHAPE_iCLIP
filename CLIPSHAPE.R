@@ -1,13 +1,15 @@
 library(seqinr)
 library(Biostrings)
 
-#Define iCLIP and icSHAPE Coordinate Files
-#clipfile <- "SRSF1.peaks.bed"
-#shapeFile <- "HEK293_icSHAPE.bed"
+### Define iCLIP and icSHAPE Coordinate Files
+## Peak-called Coordinate File (.bed) For Protein of Interest
+#clipfile <-
+## .bed File Containing All Coordinates/Ranges Which Have an icSHAPE Score Associated
+#shapeFile <- Eg. "HEK293_icSHAPE.bed"
 
 ###Prepare Functions for CLIPSHAPE###
 
-#Extract iCLIP peak coordinates from .bed file
+#Extract iCLIP Peak Coordinates from .bed File
 getClipCoord <- function(clipfile) {
   ClipCoord <- read.table(clipfile,
                         sep = "\t",
@@ -17,7 +19,7 @@ getClipCoord <- function(clipfile) {
   return(ClipCoord)
 }
 
-#Extract icSHAPE range coverage coordinates
+#Extract icSHAPE Range Coverage Coordinates
 getShapeCoord <- function(shapeFile) {
   ShapeCoord <- read.table(shapeFile,
                          sep = "\t",
@@ -26,7 +28,7 @@ getShapeCoord <- function(shapeFile) {
   return(ShapeCoord)
 }
 
-#Identify Overlapping iCLIP and icSHAPE Coverage
+#Identify Overlapping iCLIP and icSHAPE Coverage Ranges
 getShapeRange <- function(zfPeaks, ShapeCoord, strandSh, range) {
   runSites <- data.frame()
   for (x in 1:nrow(zfPeaks)) {
@@ -76,7 +78,7 @@ writeShape <- function(posChrom, clusPos, shapeData, initRange, runSize, seqName
 CLIPSHAPE <- function(clipfileName, shapeRange, clusterDistance, plusShapeName,
                              minusShapeName, outFastaName, seqFolderName,
                              shapeFolderName, ctFolderName, dbFolderName) {
-  #load full genome fasta
+  #Load Full Reference Genome fasta
   chrSeq <- readDNAStringSet("GRCh37.p13.genome.fa")
   
   dir.create(substr(seqFolderName, 1, (nchar(seqFolderName) - 1)))
@@ -84,12 +86,12 @@ CLIPSHAPE <- function(clipfileName, shapeRange, clusterDistance, plusShapeName,
   dir.create(substr(ctFolderName, 1, (nchar(ctFolderName) - 1)))
   dir.create(substr(dbFolderName, 1, (nchar(dbFolderName) - 1)))
   
-  #load clip file and shape files into data frames
+  #Load iCLIP .bed file and .SHAPE Files into Data Frames
   fullClip <- getClipCoord(clipfile = clipfileName)
   shapePlus <- getShapeCoord(plusShapeName)
   shapeMinus <- getShapeCoord(minusShapeName)
   
-  #trim clip sites to sites that have shape data available
+  #Consolidate iCLIP Coordinates To Those with Matching icSHAPE Data
   clip <- getDataSites(clipfile = fullClip, plusShape = shapePlus,
                        minusShape = shapeMinus, range = shapeRange)
   
@@ -103,27 +105,27 @@ CLIPSHAPE <- function(clipfileName, shapeRange, clusterDistance, plusShapeName,
   clip$"diff" <- -clip$"diff"
   data.table::setDF(clip)
   
-  #initialize vectors to hold sequences for output fasta and sequence names
+  #Initialize Vectors to Hold Sequences for Output fasta Files and Sequence Names
   seqList <- vector("list")
   nameVec <- c()
   n <- 0
   iter <- 0
   
-  #loop over sites in trimmed clip file and get sequences
+  #Loop Over Coordinates in Consolidated iCLIP file and Extract Sequences
   for (i in 1:nrow(clip)) {
     #skip later iterations if sequence added to list in previous
     if (n > 0) {
       n <- n - 1
       next
     }
-    #convert chromosome names to same format as in reference genome fasta
+    #Convert Chromosome Names to Match Reference Genome Formatting
     chrom <- clip[i, ]$"chrom"
     if (chrom != "chrM") {
       chromFasta <- paste(chrom, substr(chrom, 4, 5))
     } else {
       chromFasta <- "chrM MT"
     }
-    #prepare to get sequence
+    #Prepare to Extract Sequences
     strand <- clip[i, ]$"strand"
     pos <- clip[i, ]$"start"
     sequence <- c()
@@ -140,7 +142,7 @@ CLIPSHAPE <- function(clipfileName, shapeRange, clusterDistance, plusShapeName,
     }
     iter <- iter + 1
     x <- -shapeRange
-    #get sequence for current clip site and adjacent clip sites
+    #Extract Sequence for Current iCLIP Peak Coordinate and Adjacent iCLIP Peaks
     while ((x <= count)) {
       fileNamePart <- paste(chrom, ".", pos, ".", strand, sep = "")
       if (strand == "+") {
@@ -166,6 +168,6 @@ CLIPSHAPE <- function(clipfileName, shapeRange, clusterDistance, plusShapeName,
       write.fasta(sequence, nameVec[length(nameVec)], paste(seqFolderName, fileNamePart, ".seq", sep = ""))
     }
   }
-  #write a fasta with sequences around clip sites
+  #Write a fasta File With All Sequences Around iCLIP Peaks Which Overlap with icSHAPE Data-containing Coordinates
   write.fasta(seqList, nameVec, outFastaName, nbchar = 200)
 }
