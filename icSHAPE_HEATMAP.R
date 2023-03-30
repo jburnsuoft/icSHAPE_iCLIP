@@ -7,7 +7,7 @@ library(mclust)
 library(pheatmap)
 library(apcluster)
 
-###DEFINE ICSHAPE DATA FOLDERS - BEDTOOLS EXTENDED###
+### DEFINE ICSHAPE DATA FOLDERS - BEDTOOLS EXTENDED
 #vitroShapeFolder <- "SRSF1_100_SHAPE_VITRO"
 #vivoShapeFolder <- "SRSF1_100_SHAPE_VIVO"
 
