@@ -5,19 +5,15 @@ library(pheatmap)
 
 ## Protein Name For Identification
 #pname <- 
-
 ## Folder Containing Individual in vitro icSHAPE .SHAPE Files for Protein of Interest
 #vitroShapeFolder <- 
-
 ## Folder Containing Individual in vivo icSHAPE .SHAPE Files for Protein of Interest
 #vivoShapeFolder <- 
-
 ## Folder Containing Individual in silico Unpaired Probability lunp Files for Protein of Interest
 #plFolder <- 
 
 
-### 
-
+### Read Data From Defined Folders
 loadplfold <- function(shapePath) {
   shape <- read.table(shapePath, 
                       skip = 2,
@@ -56,7 +52,7 @@ shufflefiles <- list.files(path = plshuffle,
                            full.names = TRUE,
                            recursive = FALSE)
 
-
+### Format and Combine Data
 plTabs <- lapply(plfiles, loadplfold)
 vitroShapeTabs <- lapply(vitroFiles, loadShapeFile)
 vivoShapeTabs <- lapply(vivoFiles, loadShapeFile)
@@ -77,13 +73,13 @@ vitroShape <- combineCols(vitroShapeTabs)
 vivoShape <- combineCols(vivoShapeTabs)
 shufflecombine <- combineCols(shuffletabs)
 
-#Generate Data Matrix for Each Dataset
+### Generate Data Matrix for Each Dataset
 plMatrix <- data.matrix(plCombine)
 vitroShapeMatrix <- data.matrix(vitroShape)
 vivoShapeMatrix <- data.matrix(vivoShape)
 shuffleMatrix <- data.matrix(shufflecombine)
 
-#Plot and Save PDF of Median icSHAPE Profile
+### Plot and Save PDF of Median icSHAPE Profile
 plColAvg <- apply(plMatrix, 2, median)
 vitroColAvg <- apply(vitroShapeMatrix, 2, median)
 vivoColAvg <- apply(vivoShapeMatrix, 2, median)
