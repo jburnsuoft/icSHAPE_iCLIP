@@ -1,11 +1,22 @@
 library(pheatmap)
+#### R Script Used to Average and Display Resulting Overlap of icSHAPE and iCLIP Coordinates Determined by CLIPSHAPE.R
 
-#Define plFold and icSHAPE dataset folders
-#plFolder <- 
-#vitroShapeFolder <- 
-#vivoShapeFolder <- 
+### Define plFold and icSHAPE dataset folders
+
+## Protein Name For Identification
 #pname <- 
 
+## Folder Containing Individual in vitro icSHAPE .SHAPE Files for Protein of Interest
+#vitroShapeFolder <- 
+
+## Folder Containing Individual in vivo icSHAPE .SHAPE Files for Protein of Interest
+#vivoShapeFolder <- 
+
+## Folder Containing Individual in silico Unpaired Probability lunp Files for Protein of Interest
+#plFolder <- 
+
+
+### 
 
 loadplfold <- function(shapePath) {
   shape <- read.table(shapePath, 
@@ -66,7 +77,7 @@ vitroShape <- combineCols(vitroShapeTabs)
 vivoShape <- combineCols(vivoShapeTabs)
 shufflecombine <- combineCols(shuffletabs)
 
-#Generate Data Matrix
+#Generate Data Matrix for Each Dataset
 plMatrix <- data.matrix(plCombine)
 vitroShapeMatrix <- data.matrix(vitroShape)
 vivoShapeMatrix <- data.matrix(vivoShape)
@@ -79,33 +90,13 @@ vivoColAvg <- apply(vivoShapeMatrix, 2, median)
 shuffleColAvg <- apply(shuffleMatrix, 2, median)
 set.seed(1)
 background <- sample(plColAvg)
-pdf(file=paste(pname, "new_plot_shuffle.pdf", sep = ""), width = 8, height = 8)
 
-plot(c(0, length(vitroColAvg)), c(0, 1), type="n", xlab="Position", ylab="Unpaired Probability", cex.lab = 1.2)
-lines(1:length(plColAvg), plColAvg, col = "gray", lwd = "3")
-lines(1:length(vitroColAvg), vitroColAvg, col = "blue", lwd = "3")
-lines(1:length(vivoColAvg), vivoColAvg, col = "orange", lwd = "3")
-lines(1:length(shuffleColAvg), shuffleColAvg, col = "green", lwd = "3")
-title(pname)
-legend("topleft", c("RNAplFold", "vitro", "vivo"), col = c("gray", "blue", "orange"), lty=1:2, cex=0.5)
-dev.off()
-
-
-
-#Plot and Save PDF of Median icSHAPE Profile with Shuffleplfold
-plColAvg <- apply(plMatrix, 2, mean)
-vitroColAvg <- apply(vitroShapeMatrix, 2, median)
-vivoColAvg <- apply(vivoShapeMatrix, 2, median)
-shuffleColAvg <- apply(shuffleMatrix, 2, mean)
-set.seed(1)
-background <- sample(vitroColAvg)
-
-jpeg(file=paste(pname, "plot_mean.jpeg", sep = ""), width = 463, height = 463 )
-plot(c(0, length(vitroColAvg)), c(0, 1), type="n", xlab="Position", ylab="Unpaired Probability")
-lines(1:length(plColAvg), plColAvg, col = "purple")
-lines(1:length(vitroColAvg), vitroColAvg, col = "blue")
-lines(1:length(vivoColAvg), vivoColAvg, col = "orange")
-lines(1:length(shuffleColAvg), shuffleColAvg, col = "green")
-title(paste(pname,"RNAplfold"))
-legend("topleft", c("RNAplFold", "vitro", "vivo", "plFold Shuffle"), col = c("purple", "blue", "orange", "green"), lty=1:2, cex=0.5)
+pdf(file=paste(pname, "median_plot.pdf", sep = ""), width = 8, height = 8)
+  plot(c(0, length(vitroColAvg)), c(0, 1), type="n", xlab="Position", ylab="Unpaired Probability", cex.lab = 1.2)
+  lines(1:length(plColAvg), plColAvg, col = "gray", lwd = "3")
+  lines(1:length(vitroColAvg), vitroColAvg, col = "blue", lwd = "3")
+  lines(1:length(vivoColAvg), vivoColAvg, col = "orange", lwd = "3")
+  lines(1:length(shuffleColAvg), shuffleColAvg, col = "green", lwd = "3")
+  title(pname)
+  legend("topleft", c("RNAplFold", "vitro", "vivo"), col = c("gray", "blue", "orange"), lty=1:2, cex=0.5)
 dev.off()
