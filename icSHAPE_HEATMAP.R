@@ -81,16 +81,6 @@ save_pheatmap_pdf <- function(x, filename, width=7, height=7) {
   dev.off()
 }
 
-combineCols <- function(shapeDfs) {
-  shape <- data.frame()
-  for (item in shapeDfs) {
-    shape <- rbind(shape, item$"V2")
-  }
-  nums <- 1:length(shapeDfs)
-  rownames(shape) <- 
-    return(shape)
-}
-
 #####DETERMINE CLUSTERING PARAMETERS FOR HEATMAPS#####
 
 #ELBOW CLUSTERING
