@@ -1,13 +1,11 @@
 library(seqinr)
 library(Biostrings)
 
-### Define iCLIP and icSHAPE Coordinate Files
-## Peak-called Coordinate File (.bed) For Protein of Interest
-#clipfile <-
-## .bed File Containing All Coordinates/Ranges Which Have an icSHAPE Score Associated
-#shapeFile <- Eg. "HEK293_icSHAPE.bed"
+### Definitions of iCLIP and icSHAPE Coordinate Files
+## clipfile -> Peak-called Coordinate File (.bed) For Protein of Interest 
+## shapeFile -> .bed File Containing All Coordinates/Ranges Which Have an icSHAPE Score Associated
 
-###Prepare Functions for CLIPSHAPE###
+### Prepare Functions for CLIPSHAPE ###
 
 #Extract iCLIP Peak Coordinates from .bed File
 getClipCoord <- function(clipfile) {
