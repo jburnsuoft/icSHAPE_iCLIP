@@ -45,6 +45,8 @@ This script averages and visualizes the overlap between icSHAPE and iCLIP coordi
 
 **Outputs:**  
 - Median icSHAPE profile plots saved as a PDF (`<protein_name>_median_plot.pdf`).  
+![image](https://github.com/user-attachments/assets/56203b12-4eb4-4e80-a6a5-b19da562ded7)
+
 
 ---
 
