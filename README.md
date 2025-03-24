@@ -45,7 +45,8 @@ This script averages and visualizes the overlap between icSHAPE and iCLIP coordi
 
 **Outputs:**  
 - Median icSHAPE profile plots saved as a PDF (`<protein_name>_median_plot.pdf`).  
-         ![image](https://github.com/user-attachments/assets/56203b12-4eb4-4e80-a6a5-b19da562ded7)
+
+  ![image](https://github.com/user-attachments/assets/56203b12-4eb4-4e80-a6a5-b19da562ded7)
 
 
 ---
@@ -61,7 +62,8 @@ This script generates heatmaps and performs clustering analysis on the differenc
 **Outputs:**  
 - Heatmaps of icSHAPE differences between in vivo and in vitro datasets.  
 - Clustering analysis results using methods such as silhouette analysis, gap statistics, hierarchical clustering, and Bayesian maximization.  
-           ![image](https://github.com/user-attachments/assets/563923bf-878b-4fb8-9fa6-4c594087a409)
+
+  ![image](https://github.com/user-attachments/assets/563923bf-878b-4fb8-9fa6-4c594087a409)
 
 ---
 
